@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 考勤管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../shouye/shouye.html">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../xiangmugl/xiangmugl.html">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ziyuangl/ziyuangl.html">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../jinfeigl/jinfeigl.html">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../tongzhigl/tongzhigl.html">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 功能选项卡 -->
+        <ul class="nav nav-tabs mb-4" id="attendanceTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="check-in-tab" data-bs-toggle="tab" data-bs-target="#check-in" type="button" role="tab">上下班打卡</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="leave-apply-tab" data-bs-toggle="tab" data-bs-target="#leave-apply" type="button" role="tab">请假申请</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="attendance-stat-tab" data-bs-toggle="tab" data-bs-target="#attendance-stat" type="button" role="tab">考勤统计</button>
+            </li>
+        </ul>
+
+        <!-- 功能内容区 -->
+        <div class="tab-content" id="attendanceTabContent">
+            <!-- 1. 上下班打卡 -->
+            <div class="tab-pane fade show active" id="check-in" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">打卡管理</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <!-- 打卡模式选择 -->
+                            <div class="col-md-6">
+                                <label class="form-label">打卡模式 <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="checkMode" id="onlineCheck" checked>
+                                        <label class="form-check-label" for="onlineCheck">线上打卡（定位校验）</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="checkMode" id="offlineCheck">
+                                        <label class="form-check-label" for="offlineCheck">线下打卡（扫码确认）</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 今日打卡状态 -->
+                            <div class="col-12">
+                                <div class="card bg-white border">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="mb-0">今日打卡状态（2024-06-10）</h6>
+                                            <span class="badge bg-info">当前时间：09:30:25</span>
+                                        </div>
+                                        <div class="row text-center">
+                                            <div class="col-md-6">
+                                                <h6>上班打卡</h6>
+                                                <p class="text-danger fw-bold">未打卡</p>
+                                                <p class="text-muted">规定时间：08:00-09:00</p>
+                                                <button class="btn btn-primary" id="morningCheckBtn">立即打卡</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6>下班打卡</h6>
+                                                <p class="text-muted">未到打卡时间</p>
+                                                <p class="text-muted">规定时间：17:00-18:00</p>
+                                                <button class="btn btn-secondary" disabled>下班打卡</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 线下打卡二维码（默认隐藏） -->
+                            <div class="col-12" id="qrcodeContainer" style="display: none;">
+                                <div class="card bg-white border text-center">
+                                    <div class="card-body">
+                                        <h6>个人专属打卡码</h6>
+                                        <div class="d-flex justify-content-center my-3">
+                                            <div style="width: 200px; height: 200px; border: 1px solid #eee; display: flex; align-items: center; justify-content: center;">
+                                                <span>二维码区域</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted">请使用实验室/办公室打卡机扫码打卡</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 异常打卡说明 -->
+                            <div class="col-12">
+                                <div class="card bg-white border">
+                                    <div class="card-body">
+                                        <h6>异常打卡说明</h6>
+                                        <ul class="text-muted">
+                                            <li>线上打卡需开启定位，且定位需在机构指定区域内（误差≤100米）</li>
+                                            <li>超过规定时段打卡记为“异常”，需24小时内提交异常说明</li>
+                                            <li>未打卡且未提交请假/出差申请，记为“旷工”</li>
+                                        </ul>
+                                        <button class="btn btn-secondary" id="abnormalExplainBtn">提交异常说明</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 请假申请 -->
+            <div class="tab-pane fade" id="leave-apply" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">请假申请</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">请假类型 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="leaveType" required>
+                                    <option value="">请选择请假类型</option>
+                                    <option value="personal">事假</option>
+                                    <option value="sick">病假</option>
+                                    <option value="annual">年假</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">请假时长（天） <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="leaveDays" min="0.5" step="0.5" placeholder="1天=8小时" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">请假周期 <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" required>
+                                    <span class="input-group-text">至</span>
+                                    <input type="date" class="form-control" required>
+                                </div>
+                                <div class="form-text">跨周末自动扣除周末天数</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">工作交接人 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择系统内科研人员</option>
+                                    <option value="user1">李四（工程师）</option>
+                                    <option value="user2">王五（研究员）</option>
+                                </select>
+                            </div>
+                            <div class="col-12" id="leaveReasonContainer">
+                                <label class="form-label">请假事由 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="3" placeholder="10-50个汉字" required></textarea>
+                            </div>
+                            <div class="col-12" id="medicalProofContainer" style="display: none;">
+                                <label class="form-label">医疗证明 <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg" required>
+                                <div class="form-text">单个文件≤100MB，支持PDF、JPG格式（医院诊断证明）</div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitLeaveBtn">提交请假申请</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 我的请假记录 -->
+                <div class="card bg-light mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">我的请假记录</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>请假类型</th>
+                                        <th>请假时长</th>
+                                        <th>请假周期</th>
+                                        <th>审批状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>事假</td>
+                                        <td>1天</td>
+                                        <td>2024-05-20 至 2024-05-20</td>
+                                        <td><span class="badge bg-success">已通过</span></td>
+                                        <td><button class="btn btn-sm btn-secondary">查看详情</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>年假</td>
+                                        <td>3天</td>
+                                        <td>2024-06-15 至 2024-06-17</td>
+                                        <td><span class="badge bg-warning">待审批</span></td>
+                                        <td><button class="btn btn-sm btn-danger cancelLeaveBtn">取消申请</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 考勤统计 -->
+            <div class="tab-pane fade" id="attendance-stat" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">统计条件</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">统计周期 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="statCycle" required>
+                                    <option value="month">月度统计</option>
+                                    <option value="quarter">季度统计</option>
+                                    <option value="year">年度统计</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">统计月份/季度/年度 <span class="text-danger">*</span></label>
+                                <input type="month" class="form-control" id="statDate" required>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="generateStatBtn">生成统计报表</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 统计报表展示（默认隐藏） -->
+                <div id="statReportArea" class="card bg-light d-none">
+                    <div class="card-header">
+                        <h5 class="mb-0">2024年05月考勤统计报表 - 张三（工号：KY2024001）</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-white text-center border">
+                                    <div class="card-body">
+                                        <h6 class="card-title">正常打卡天数</h6>
+                                        <p class="card-text display-6 text-success">18天</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white text-center border">
+                                    <div class="card-body">
+                                        <h6 class="card-title">迟到/早退次数</h6>
+                                        <p class="card-text display-6 text-warning">2次</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white text-center border">
+                                    <div class="card-body">
+                                        <h6 class="card-title">请假天数</h6>
+                                        <p class="card-text display-6 text-info">1天</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white text-center border">
+                                    <div class="card-body">
+                                        <h6 class="card-title">旷工天数</h6>
+                                        <p class="card-text display-6 text-danger">0天</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>上班打卡时间</th>
+                                        <th>下班打卡时间</th>
+                                        <th>考勤状态</th>
+                                        <th>备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-05-06</td>
+                                        <td>08:30:15</td>
+                                        <td>17:15:30</td>
+                                        <td><span class="badge bg-success">正常</span></td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-08</td>
+                                        <td>09:10:22</td>
+                                        <td>17:05:18</td>
+                                        <td><span class="badge bg-warning">迟到</span></td>
+                                        <td>路上堵车（已提交说明）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-05-20</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="badge bg-info">事假</span></td>
+                                        <td>家中有事（已审批）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3">
+                            <button class="btn btn-secondary" id="exportStatBtn">导出报表（Excel）</button>
+                            <button class="btn btn-primary ms-2" id="confirmStatBtn">确认报表无误</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 切换打卡模式
+        $('input[name="checkMode"]').change(function() {
+            const isOffline = $(this).attr('id') === 'offlineCheck';
+            $('#qrcodeContainer').toggle(isOffline);
+        });
+
+        // 上班打卡
+        $('#morningCheckBtn').click(function() {
+            const now = new Date();
+            const hour = now.getHours();
+            let status = '';
+            
+            if (hour >= 8 && hour < 9) {
+                status = '正常';
+                $(this).closest('div').find('p.fw-bold').removeClass('text-danger').addClass('text-success').text(`已打卡（${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}）`);
+            } else {
+                status = '异常（迟到）';
+                $(this).closest('div').find('p.fw-bold').removeClass('text-danger').addClass('text-warning').text(`已打卡（${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}）- ${status}`);
+            }
+            
+            $(this).replaceWith(`<button class="btn btn-secondary" disabled>已打卡</button>`);
+            alert(`上班打卡成功！打卡状态：${status}`);
+        });
+
+        // 提交异常说明
+        $('#abnormalExplainBtn').click(function() {
+            const modal = `
+                <div class="modal fade" id="abnormalModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">异常打卡说明</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">异常日期 <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">异常类型 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="late">迟到</option>
+                                        <option value="earlyLeave">早退</option>
+                                        <option value="noCheck">未打卡</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">异常原因 <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" rows="3" placeholder="10-50个汉字" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" id="submitAbnormalBtn">提交说明</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('body').append(modal);
+            $('#abnormalModal').modal('show');
+            
+            $('#submitAbnormalBtn').click(function() {
+                alert('异常说明提交成功！等待部门管理员审核');
+                $('#abnormalModal').modal('hide');
+                setTimeout(() => $('#abnormalModal').remove(), 500);
+            });
+        });
+
+        // 切换请假类型显示对应字段
+        $('#leaveType').change(function() {
+            const type = $(this).val();
+            $('#medicalProofContainer').hide();
+            
+            if (type === 'sick') {
+                $('#medicalProofContainer').show();
+                $('#leaveReasonContainer label').text('请假事由（需注明疾病类型） <span class="text-danger">*</span>');
+            } else if (type === 'personal') {
+                $('#leaveReasonContainer label').text('请假事由 <span class="text-danger">*</span>');
+            } else if (type === 'annual') {
+                $('#leaveReasonContainer label').text('请假事由 <span class="text-danger">*</span>');
+                // 年假天数限制（示例逻辑）
+                $('#leaveDays').attr('max', 5).attr('title', '工作1-3年，年假最多5天');
+            }
+        });
+
+        // 提交请假申请
+        $('#submitLeaveBtn').click(function() {
+            const type = $('#leaveType option:selected').text();
+            const days = $('#leaveDays').val();
+            alert(`请假申请提交成功！\n请假类型：${type}\n请假时长：${days}天\n将按流程进行审批`);
+        });
+
+        // 取消请假申请
+        $('.cancelLeaveBtn').click(function() {
+            if (confirm('确定要取消该请假申请吗？取消后不可恢复')) {
+                $(this).closest('tr').find('.badge').removeClass('bg-warning').addClass('bg-danger').text('已取消');
+                $(this).replaceWith(`<button class="btn btn-sm btn-secondary" disabled>已取消</button>`);
+                alert('请假申请已取消！');
+            }
+        });
+
+        // 生成考勤统计
+        $('#generateStatBtn').click(function() {
+            $('#statReportArea').removeClass('d-none');
+            alert('考勤统计报表生成成功！');
+        });
+
+        // 导出考勤报表
+        $('#exportStatBtn').click(function() {
+            alert('考勤报表已成功导出为Excel格式！');
+        });
+
+        // 确认考勤报表
+        $('#confirmStatBtn').click(function() {
+            if (confirm('确认报表无误？确认后不可修改')) {
+                $(this).replaceWith(`<button class="btn btn-success ms-2" disabled>已确认</button>`);
+                alert('报表已确认！将同步至薪资系统作为薪资计算依据');
+            }
+        });
+    </script>
+</body>
+</html>
