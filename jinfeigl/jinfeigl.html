@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 经费管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../shouye/shouye.html">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../xiangmugl/xiangmugl.html">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ziyuangl/ziyuangl.html">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../kaoqinggl/kaoqinggl.html">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../tongzhigl/tongzhigl.html">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 功能选项卡 -->
+        <ul class="nav nav-tabs mb-4" id="fundTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="add-fund-tab" data-bs-toggle="tab" data-bs-target="#add-fund" type="button" role="tab">经费录入</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="expense-record-tab" data-bs-toggle="tab" data-bs-target="#expense-record" type="button" role="tab">经费支出</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fund-report-tab" data-bs-toggle="tab" data-bs-target="#fund-report" type="button" role="tab">经费报表</button>
+            </li>
+        </ul>
+
+        <!-- 功能内容区 -->
+        <div class="tab-content" id="fundTabContent">
+            <!-- 1. 经费录入 -->
+            <div class="tab-pane fade show active" id="add-fund" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">经费信息录入</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">录入类型 <span class="text-danger">*</span></label>
+                            <select class="form-select" id="fundInputType" required>
+                                <option value="arrival">经费到账</option>
+                                <option value="budget">预算明细</option>
+                            </select>
+                        </div>
+
+                        <!-- 经费到账表单 -->
+                        <div id="fundArrivalForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">项目编号 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择已立项项目</option>
+                                        <option value="proj01">LX-2024-001 - AI智能检测系统研发</option>
+                                        <option value="proj02">LX-2024-002 - 新型材料性能测试合作</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">到账金额（万元） <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="保留2位小数" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">到账日期 <span class="text-danger">*</span></label>
+                                    <input type="month" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">经费来源 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择经费来源</option>
+                                        <option value="finance">财政拨款</option>
+                                        <option value="enterprise">企业资助</option>
+                                        <option value="other">其他来源</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">到账凭证 <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg" required>
+                                    <div class="form-text">单个文件≤100MB，支持PDF、JPG格式（银行回单、拨款通知）</div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary" id="submitFundArrivalBtn">提交录入</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 预算明细表单（默认隐藏） -->
+                        <div id="budgetDetailForm" class="d-none">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">项目编号 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择已立项项目</option>
+                                        <option value="proj01">LX-2024-001 - AI智能检测系统研发</option>
+                                        <option value="proj02">LX-2024-002 - 新型材料性能测试合作</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">预算类别 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择预算类别</option>
+                                        <option value="equipment">设备采购</option>
+                                        <option value="travel">差旅费</option>
+                                        <option value="labor">劳务费</option>
+                                        <option value="meeting">会议费</option>
+                                        <option value="other">其他费用</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">预算金额（万元） <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="保留2位小数" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">项目总预算（万元） <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="所有类别预算总和需等于此值" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">备注</label>
+                                    <textarea class="form-control" rows="2" placeholder="10-50个汉字，如“设备采购含服务器2台”"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary" id="submitBudgetBtn">提交录入</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目经费汇总 -->
+                <div class="card bg-light mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目经费汇总（最近更新）</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>到账总额（万元）</th>
+                                        <th>已支出（万元）</th>
+                                        <th>余额（万元）</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>LX-2024-001</td>
+                                        <td>AI智能检测系统研发</td>
+                                        <td>50.00</td>
+                                        <td>18.50</td>
+                                        <td>31.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LX-2024-002</td>
+                                        <td>新型材料性能测试合作</td>
+                                        <td>80.00</td>
+                                        <td>32.20</td>
+                                        <td>47.80</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 经费支出 -->
+            <div class="tab-pane fade" id="expense-record" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">经费支出录入</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">项目编号 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="expenseProjectSelect" required>
+                                    <option value="">请选择已到账项目</option>
+                                    <option value="proj01">LX-2024-001 - AI智能检测系统研发（余额：31.50万元）</option>
+                                    <option value="proj02">LX-2024-002 - 新型材料性能测试合作（余额：47.80万元）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">支出日期 <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">支出类别 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="expenseType" required>
+                                    <option value="">请选择支出类别（需与预算一致）</option>
+                                    <option value="equipment">设备采购（预算：20.00万元，已支出：12.50万元）</option>
+                                    <option value="travel">差旅费（预算：10.00万元，已支出：6.00万元）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">支出金额（万元） <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" class="form-control" id="expenseAmount" placeholder="保留2位小数" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">经办人 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择系统内科研人员</option>
+                                    <option value="user1">张三（研究员）</option>
+                                    <option value="user2">李四（工程师）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">支出事由 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="10-50个汉字，如“购买示波器1台”" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">支出凭证 <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg" required>
+                                <div class="form-text">单个文件≤100MB，支持PDF、JPG格式（发票、报销单）</div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitExpenseBtn">提交支出记录</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最近支出记录 -->
+                <div class="card bg-light mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">最近经费支出记录</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>项目名称</th>
+                                        <th>支出日期</th>
+                                        <th>支出类别</th>
+                                        <th>支出金额（万元）</th>
+                                        <th>经办人</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>AI智能检测系统研发</td>
+                                        <td>2024-05-20</td>
+                                        <td>设备采购</td>
+                                        <td>8.50</td>
+                                        <td>张三</td>
+                                        <td><span class="badge bg-success">已审核</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>新型材料性能测试合作</td>
+                                        <td>2024-06-02</td>
+                                        <td>差旅费</td>
+                                        <td>3.20</td>
+                                        <td>李四</td>
+                                        <td><span class="badge bg-success">已审核</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 经费报表 -->
+            <div class="tab-pane fade" id="fund-report" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">报表生成条件</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">报表类型 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reportType" required>
+                                    <option value="projectDetail">项目经费明细表</option>
+                                    <option value="summary">经费汇总表（机构/部门）</option>
+                                    <option value="trend">支出趋势表</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" id="projectSelectContainer">
+                                <label class="form-label">项目编号 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择项目（仅明细表需选）</option>
+                                    <option value="proj01">LX-2024-001 - AI智能检测系统研发</option>
+                                    <option value="proj02">LX-2024-002 - 新型材料性能测试合作</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" id="deptSelectContainer" style="display: none;">
+                                <label class="form-label">所属部门</label>
+                                <select class="form-select">
+                                    <option value="">全部部门</option>
+                                    <option value="dept1">计算机研究所</option>
+                                    <option value="dept2">材料科学部门</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">统计周期 <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="month" class="form-control" required>
+                                    <span class="input-group-text">至</span>
+                                    <input type="month" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary w-100" id="generateReportBtn">生成报表</button>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end" id="exportBtnContainer" style="display: none;">
+                                <button class="btn btn-secondary w-100" id="exportReportBtn">导出报表（Excel/PDF）</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报表展示区（默认隐藏） -->
+                <div id="reportDisplayArea" class="card bg-light d-none">
+                    <div class="card-header">
+                        <h5 class="mb-0" id="reportTitle">项目经费明细表 - AI智能检测系统研发（LX-2024-001）</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>经费类型</th>
+                                        <th>金额（万元）</th>
+                                        <th>日期</th>
+                                        <th>凭证编号/备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2"><strong>经费到账</strong></td>
+                                        <td>30.00</td>
+                                        <td>2024-03</td>
+                                        <td>财政拨款（凭证号：CZ20240301）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>20.00</td>
+                                        <td>2024-04</td>
+                                        <td>企业配套（凭证号：QY20240405）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>到账总额</strong></td>
+                                        <td colspan="3" class="text-danger">50.00万元</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3"><strong>经费支出</strong></td>
+                                        <td>8.50</td>
+                                        <td>2024-05-20</td>
+                                        <td>设备采购-示波器（发票号：FP2024052001）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.00</td>
+                                        <td>2024-05-25</td>
+                                        <td>设备采购-服务器（发票号：FP2024052501）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.00</td>
+                                        <td>2024-06-01</td>
+                                        <td>差旅费-项目调研（报销单：BX2024060101）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>支出总额</strong></td>
+                                        <td colspan="3" class="text-danger">18.50万元</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>当前余额</strong></td>
+                                        <td colspan="3" class="text-success">31.50万元</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 支出趋势图（默认隐藏） -->
+                <div id="trendChartArea" class="card bg-light d-none mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">AI智能检测系统研发 - 支出趋势（2024年3-6月）</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="expenseTrendChart" width="800" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 切换经费录入类型
+        $('#fundInputType').change(function() {
+            const type = $(this).val();
+            if (type === 'arrival') {
+                $('#fundArrivalForm').removeClass('d-none');
+                $('#budgetDetailForm').addClass('d-none');
+            } else if (type === 'budget') {
+                $('#fundArrivalForm').addClass('d-none');
+                $('#budgetDetailForm').removeClass('d-none');
+            }
+        });
+
+        // 经费录入提交
+        $('#submitFundArrivalBtn, #submitBudgetBtn').click(function() {
+            const typeText = $(this).closest('#fundArrivalForm, #budgetDetailForm').attr('id');
+            const type = typeText === 'fundArrivalForm' ? '经费到账' : '预算明细';
+            alert(`${type}录入提交成功！等待审核确认`);
+        });
+
+        // 支出金额校验
+        $('#submitExpenseBtn').click(function() {
+            const project = $('#expenseProjectSelect option:selected').text();
+            const type = $('#expenseType option:selected').text();
+            const amount = parseFloat($('#expenseAmount').val());
+            
+            // 提取预算剩余金额（示例逻辑）
+            let remainAmount = 0;
+            if (type.includes('设备采购')) remainAmount = 7.5; // 20-12.5
+            if (type.includes('差旅费')) remainAmount = 4.0;   // 10-6
+            
+            if (amount > remainAmount) {
+                alert(`该类别预算不足！当前剩余：${remainAmount}万元，不可支出${amount}万元`);
+                return;
+            }
+            alert(`经费支出记录提交成功！\n项目：${project.substring(0, 20)}...\n金额：${amount}万元`);
+        });
+
+        // 切换报表类型显示对应选择项
+        $('#reportType').change(function() {
+            const type = $(this).val();
+            if (type === 'projectDetail') {
+                $('#projectSelectContainer').show();
+                $('#deptSelectContainer').hide();
+            } else if (type === 'summary') {
+                $('#projectSelectContainer').hide();
+                $('#deptSelectContainer').show();
+            } else if (type === 'trend') {
+                $('#projectSelectContainer').show();
+                $('#deptSelectContainer').hide();
+            }
+        });
+
+        // 生成报表
+        $('#generateReportBtn').click(function() {
+            const type = $('#reportType').val();
+            $('#exportBtnContainer').show();
+            
+            if (type === 'projectDetail' || type === 'summary') {
+                $('#reportDisplayArea').removeClass('d-none');
+                $('#trendChartArea').addClass('d-none');
+            } else if (type === 'trend') {
+                $('#reportDisplayArea').addClass('d-none');
+                $('#trendChartArea').removeClass('d-none');
+                initTrendChart(); // 初始化趋势图
+            }
+            alert('报表生成成功！');
+        });
+
+        // 导出报表
+        $('#exportReportBtn').click(function() {
+            const format = confirm('是否导出为Excel格式？\n（取消则导出为PDF格式）');
+            const formatText = format ? 'Excel' : 'PDF';
+            alert(`报表已成功导出为${formatText}格式！`);
+        });
+
+        // 初始化支出趋势图
+        function initTrendChart() {
+            const ctx = document.getElementById('expenseTrendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['3月', '4月', '5月', '6月'],
+                    datasets: [{
+                        label: '设备采购支出（万元）',
+                        data: [0, 0, 12.5, 12.5],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }, {
+                        label: '差旅费支出（万元）',
+                        data: [0, 0, 0, 6.0],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: '支出金额（万元）' }
+                        },
+                        x: { title: { display: true, text: '月份' } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
