@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link active" href="#">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../xiangmugl/xiangmugl.html">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ziyuangl/ziyuangl.html">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../jinfeigl/jinfeigl.html">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../kaoqinggl/kaoqinggl.html">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../tongzhigl/tongzhigl.html">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 数据统计卡片 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">用户统计</h5>
+                        <p class="card-text display-5">1234</p>
+                        <p class="card-text text-muted">当前分类总记录数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">成员统计</h5>
+                        <p class="card-text display-5">2234</p>
+                        <p class="card-text text-muted">当前分类总记录数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">专业统计</h5>
+                        <p class="card-text display-5">234</p>
+                        <p class="card-text text-muted">当前分类总记录数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">赛事统计</h5>
+                        <p class="card-text display-5">1234</p>
+                        <p class="card-text text-muted">当前分类总记录数</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷入口 -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">快捷入口</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div class="col-4"><a href="../usergl/usergl.html#add-user" class="btn btn-primary w-100">添加用户</a></div>
+                            <div class="col-4"><a href="../xiangmugl/xiangmugl.html#add-project" class="btn btn-primary w-100">添加项目</a></div>
+                            <div class="col-4"><a href="../ziyuangl/ziyuangl.html#add-equipment" class="btn btn-primary w-100">添加设备</a></div>
+                            <div class="col-4"><a href="../chengguogl/chengguogl.html#add-achievement" class="btn btn-primary w-100">添加成果</a></div>
+                            <div class="col-4"><a href="../jinfeigl/jinfeigl.html#add-fund" class="btn btn-primary w-100">添加经费</a></div>
+                            <div class="col-4"><a href="../tongzhigl/tongzhigl.html#publish-notice" class="btn btn-primary w-100">发布通知</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统公告 -->
+            <div class="col-md-6">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">系统公告</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>恭喜张三获得设计大赛特等奖</span>
+                                <small class="text-muted">2019-07-11 23:06</small>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>恭喜李四获得项目竞赛一等奖</span>
+                                <small class="text-muted">2019-07-11 12:57</small>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>数据库设计大赛即将开始</span>
+                                <small class="text-muted">2019-07-04 11:02</small>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>创新网页比赛即将开始</span>
+                                <small class="text-muted">2019-06-17 11:55</small>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>联合开放实验室注册人数创新高</span>
+                                <small class="text-muted">2019-06-13 14:53</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 版本信息 -->
+        <div class="card bg-light mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">版本信息</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td class="w-25">项目名称</td>
+                        <td>科研机构管理系统</td>
+                    </tr>
+                    <tr>
+                        <td>当前版本</td>
+                        <td>v2.0.0</td>
+                    </tr>
+                    <tr>
+                        <td>主要特色</td>
+                        <td>响应式/清爽/极简/支持移动端</td>
+                    </tr>
+                    <tr>
+                        <td>开发者</td>
+                        <td>13组（马楷超，学号：2413041733）</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 作者心语 -->
+        <div class="card bg-light">
+            <div class="card-header">
+                <h5 class="mb-0">作者心语</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">本平台基于Bootstrap框架开发，满足科研机构日常管理需求，操作简洁，功能全面，支持多角色权限管理。</p>
+                <p class="card-text">码云地址: <a href="https://gitee.com/wzj188/nuc2024A/tree/master/2413041733%E9%A9%AC%E6%A5%B7%E8%B6%85" target="_blank">https://gitee.com/wzj188/nuc2024A/tree/master/2413041733%E9%A9%AC%E6%A5%B7%E8%B6%85</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
