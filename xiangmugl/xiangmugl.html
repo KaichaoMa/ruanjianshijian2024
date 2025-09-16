@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 项目管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../shouye/shouye.html">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ziyuangl/ziyuangl.html">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../jinfeigl/jinfeigl.html">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../kaoqinggl/kaoqinggl.html">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../tongzhigl/tongzhigl.html">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 功能选项卡 -->
+        <ul class="nav nav-tabs mb-4" id="projectTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="add-project-tab" data-bs-toggle="tab" data-bs-target="#add-project" type="button" role="tab">项目申报</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="project-audit-tab" data-bs-toggle="tab" data-bs-target="#project-audit" type="button" role="tab">项目审核</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="project-progress-tab" data-bs-toggle="tab" data-bs-target="#project-progress" type="button" role="tab">进度管理</button>
+            </li>
+        </ul>
+
+        <!-- 功能内容区 -->
+        <div class="tab-content" id="projectTabContent">
+            <!-- 1. 项目申报 -->
+            <div class="tab-pane fade show active" id="add-project" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目申报录入</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">项目类型 <span class="text-danger">*</span></label>
+                            <select class="form-select" id="projectType" required>
+                                <option value="vertical">纵向项目</option>
+                                <option value="horizontal">横向项目</option>
+                            </select>
+                        </div>
+
+                        <!-- 纵向项目表单 -->
+                        <div id="verticalProjectForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">项目名称 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="5-50个汉字/字母组合" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">主管单位 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择主管单位</option>
+                                        <option value="techDept">科技部</option>
+                                        <option value="eduDept">教育部</option>
+                                        <option value="other">其他部门</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">申报金额（万元） <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="保留2位小数" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">申报周期 <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" required>
+                                        <span class="input-group-text">至</span>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">项目组长 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="">请选择系统内科研人员</option>
+                                        <option value="user1">张三（研究员）</option>
+                                        <option value="user2">李四（助理工程师）</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">参与人员 <span class="text-danger">*</span></label>
+                                    <select class="form-select" multiple required>
+                                        <option value="user3">王五（研究员）</option>
+                                        <option value="user4">赵六（工程师）</option>
+                                        <option value="user5">孙七（助理研究员）</option>
+                                    </select>
+                                    <div class="form-text">按住Ctrl键可多选，最多10人</div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">申报书附件 <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" accept=".pdf" required>
+                                    <div class="form-text">单个文件≤200MB，仅支持PDF格式</div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">备注</label>
+                                    <textarea class="form-control" rows="2" placeholder="10-100个汉字"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary" id="submitVerticalProjectBtn">提交申报</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 横向项目表单（默认隐藏） -->
+                        <div id="horizontalProjectForm" class="d-none">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">项目名称 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="5-50个汉字/字母组合" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">合作单位 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="3-20个汉字/字母组合" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">合同编号 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="如“HZ-2024-ABC001”" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">到账金额（万元） <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="保留2位小数" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">项目周期 <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" required>
+                                        <span class="input-group-text">至</span>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">保密级别 <span class="text-danger">*</span></label>
+                                    <select class="form-select" required>
+                                        <option value="public">公开</option>
+                                        <option value="internal">内部</option>
+                                        <option value="secret">秘密</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">合同附件 <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" accept=".pdf" required>
+                                    <div class="form-text">单个文件≤200MB，仅支持PDF格式</div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary" id="submitHorizontalProjectBtn">提交申报</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目模板下载 -->
+                <div class="card bg-light mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目模板管理</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>模板类型</th>
+                                    <th>对应场景</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>纵向项目申报书模板</td>
+                                    <td>科研人员申报纵向项目</td>
+                                    <td><a href="#" class="btn btn-sm btn-secondary">下载（Word格式）</a></td>
+                                </tr>
+                                <tr>
+                                    <td>横向项目合同模板</td>
+                                    <td>科研人员与合作单位签订合同</td>
+                                    <td><a href="#" class="btn btn-sm btn-secondary">下载（Word格式）</a></td>
+                                </tr>
+                                <tr>
+                                    <td>项目进度报告模板</td>
+                                    <td>项目周期内进度更新</td>
+                                    <td><a href="#" class="btn btn-sm btn-secondary">下载（Word格式）</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 项目审核 -->
+            <div class="tab-pane fade" id="project-audit" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">审核条件筛选</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">项目名称</label>
+                                <input type="text" class="form-control" placeholder="模糊查询">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">项目编号</label>
+                                <input type="text" class="form-control" placeholder="输入申报阶段编号">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">审核状态</label>
+                                <select class="form-select">
+                                    <option value="">全部状态</option>
+                                    <option value="deptCheck">待部门初审</option>
+                                    <option value="deptReject">部门初审退回</option>
+                                    <option value="funcCheck">待职能复审</option>
+                                    <option value="finalCheck">待机构终审</option>
+                                    <option value="approved">已立项</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="queryAuditBtn">查询</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 审核列表 -->
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目审核列表</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>项目名称</th>
+                                        <th>项目编号</th>
+                                        <th>项目类型</th>
+                                        <th>申报人</th>
+                                        <th>审核状态</th>
+                                        <th>当前审核人</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>AI智能检测系统研发</td>
+                                        <td>ZJ-2024-001</td>
+                                        <td>纵向项目</td>
+                                        <td>张三</td>
+                                        <td><span class="badge bg-warning">待部门初审</span></td>
+                                        <td>李四（部门管理员）</td>
+                                        <td><button class="btn btn-sm btn-primary auditProjectBtn">审核</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>新型材料性能测试合作</td>
+                                        <td>HZ-2024-001</td>
+                                        <td>横向项目</td>
+                                        <td>王五</td>
+                                        <td><span class="badge bg-info">待职能复审</span></td>
+                                        <td>赵六（项目管理管理员）</td>
+                                        <td><button class="btn btn-sm btn-primary auditProjectBtn">审核</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 进度管理 -->
+            <div class="tab-pane fade" id="project-progress" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">选择项目</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">项目名称 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="progressProjectSelect" required>
+                                    <option value="">请选择已立项项目</option>
+                                    <option value="project1">AI智能检测系统研发（LX-2024-001）</option>
+                                    <option value="project2">新型材料性能测试合作（LX-2024-002）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary w-100" id="selectProjectBtn">确认选择</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进度更新表单（默认隐藏） -->
+                <div id="progressUpdateForm" class="card bg-light mb-4 d-none">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目进度更新</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">进度阶段 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="research">调研阶段</option>
+                                    <option value="development">研发阶段</option>
+                                    <option value="test">测试阶段</option>
+                                    <option value="conclusion">结题阶段</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">更新日期 <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">已完成内容 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="3" placeholder="10-200个汉字" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">未完成内容</label>
+                                <textarea class="form-control" rows="2" placeholder="10-200个汉字"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">下一阶段计划</label>
+                                <textarea class="form-control" rows="2" placeholder="10-200个汉字"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">阶段性报告附件</label>
+                                <input type="file" class="form-control" accept=".pdf">
+                                <div class="form-text">单个文件≤200MB，仅支持PDF格式</div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitProgressBtn">提交进度</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进度记录列表 -->
+                <div id="progressRecordList" class="card bg-light d-none">
+                    <div class="card-header">
+                        <h5 class="mb-0">项目进度记录</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>更新时间</th>
+                                        <th>进度阶段</th>
+                                        <th>已完成内容</th>
+                                        <th>更新人</th>
+                                        <th>附件</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-05-10</td>
+                                        <td>调研阶段</td>
+                                        <td>完成市场调研与技术文献查阅，确定研发方向</td>
+                                        <td>张三</td>
+                                        <td><a href="#" class="text-primary">查看报告</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-06-15</td>
+                                        <td>研发阶段</td>
+                                        <td>完成核心算法设计，搭建基础测试环境</td>
+                                        <td>张三</td>
+                                        <td><a href="#" class="text-primary">查看报告</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 切换项目类型表单
+        $('#projectType').change(function() {
+            const type = $(this).val();
+            if (type === 'vertical') {
+                $('#verticalProjectForm').removeClass('d-none');
+                $('#horizontalProjectForm').addClass('d-none');
+            } else if (type === 'horizontal') {
+                $('#verticalProjectForm').addClass('d-none');
+                $('#horizontalProjectForm').removeClass('d-none');
+            }
+        });
+
+        // 提交纵向项目申报
+        $('#submitVerticalProjectBtn').click(function() {
+            alert('纵向项目申报提交成功！等待部门初审');
+        });
+
+        // 提交横向项目申报
+        $('#submitHorizontalProjectBtn').click(function() {
+            alert('横向项目申报提交成功！等待部门初审');
+        });
+
+        // 查询审核项目
+        $('#queryAuditBtn').click(function() {
+            alert('项目审核查询成功！');
+        });
+
+        // 项目审核操作
+        $('.auditProjectBtn').click(function() {
+            const projectName = $(this).closest('tr').find('td:first').text();
+            const auditStatus = $(this).closest('tr').find('.badge').text();
+            
+            let auditForm = `
+                <div class="modal fade" id="auditModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${projectName} - ${auditStatus}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">审核意见 <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="auditResult" required>
+                                        <option value="pass">通过</option>
+                                        <option value="reject">退回修改</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="rejectReasonContainer">
+                                    <label class="form-label">退回原因（仅退回时填写）</label>
+                                    <textarea class="form-control" rows="3" placeholder="请注明修改原因"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" id="confirmAuditBtn">确认审核</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('body').append(auditForm);
+            
+            // 显示退回原因输入框控制
+            $('#auditResult').change(function() {
+                if ($(this).val() === 'reject') {
+                    $('#rejectReasonContainer').removeClass('d-none');
+                } else {
+                    $('#rejectReasonContainer').addClass('d-none');
+                }
+            });
+            
+            // 确认审核
+            $('#confirmAuditBtn').click(function() {
+                const result = $('#auditResult').val();
+                let msg = result === 'pass' ? '审核通过！已流转至下一环节' : '审核退回！已通知申报人修改';
+                alert(msg);
+                $('#auditModal').modal('hide');
+                setTimeout(() => $('#auditModal').remove(), 500);
+            });
+            
+            $('#auditModal').modal('show');
+        });
+
+        // 选择项目查看进度
+        $('#selectProjectBtn').click(function() {
+            const projectVal = $('#progressProjectSelect').val();
+            if (projectVal) {
+                $('#progressUpdateForm').removeClass('d-none');
+                $('#progressRecordList').removeClass('d-none');
+                alert('项目选择成功！可更新进度或查看历史记录');
+            } else {
+                alert('请选择已立项项目！');
+            }
+        });
+
+        // 提交进度更新
+        $('#submitProgressBtn').click(function() {
+            alert('项目进度更新提交成功！');
+        });
+    </script>
+</body>
+</html>
