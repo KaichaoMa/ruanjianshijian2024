@@ -1,0 +1,195 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "./shouye/shouye.html"
+  },
+  "logoInfo": {
+    "title": "科研机构",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "首页",
+          "href": "./shouye/shouye.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-group",
+          "target": "_self",
+          "child": [
+          {
+            "title": "添加用户",
+            "href": "./usergl/usergl.html#add-user",
+            "icon": "fa fa-plus-square-o",
+            "target": "_self"
+          }, {
+            "title": "查询用户",
+            "href": "./usergl/usergl.html#query-user",
+            "icon": "fa fa-search",
+            "target": "_self"
+          }, {
+            "title": "密码重置",
+            "href": "./usergl/usergl.html#reset-password",
+            "icon": "fa fa-lock",
+            "target": "_self"
+          }
+        ]
+        },
+        {
+          "title": "项目管理",
+          "href": "",
+          "icon": "fa fa-server",
+          "target": "_self",
+          "child": [
+            {
+              "title": "项目申报",
+              "href": "./xiangmugl/xiangmugl.html#add-project",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "项目审核",
+              "href": "./xiangmugl/xiangmugl.html#project-audit",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "进度管理",
+              "href": "./xiangmugl/xiangmugl.html#project-progress",
+              "icon": "fa fa-search",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "资源管理",
+          "href": "",
+          "icon": "fa fa-male",
+          "target": "_self",
+          "child": [
+            {
+              "title": "设备登记",
+              "href": "./ziyuangl/ziyuangl.html#add-equipment",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "设备预约",
+              "href": "./ziyuangl/ziyuangl.html#equipment-reserve",
+              "icon": "fa fa-search-plus",
+              "target": "_self"
+            }, {
+              "title": "实验室预约",
+              "href": "./ziyuangl/ziyuangl.html#lab-reserve",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "成果管理",
+          "href": "",
+          "icon": "fa fa-trophy",
+          "target": "_self",
+          "child": [
+            {
+              "title": "成果录入",
+              "href": "./chengguogl/chengguogl.html#add-achievement",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "成果绑定项目",
+              "href": "./chengguogl/chengguogl.html#bind-project",
+              "icon": "fa fa-search",
+              "target": "_self"
+            }, {
+              "title": "成果查询",
+              "href": "./chengguogl/chengguogl.html#query-achievement",
+              "icon": "fa fa-search",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "经费管理",
+          "href": "",
+          "icon": "fa fa-cny",
+          "target": "_self",
+          "child": [
+            {
+              "title": "经费录入",
+              "href": "./jinfeigl/jinfeigl.html#add-fund",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "经费支出",
+              "href": "./jinfeigl/jinfeigl.html#expense-record",
+              "icon": "fa fa-search-plus",
+              "target": "_self"
+            }, {
+              "title": "经费报表",
+              "href": "./jinfeigl/jinfeigl.html#fund-report",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "考勤管理",
+          "href": "",
+          "icon": "fa fa-eye",
+          "target": "_self",
+          "child": [
+            {
+              "title": "上下班打卡",
+              "href": "./kaoqinggl/kaoqinggl.html#check-in",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "请假申请",
+              "href": "./kaoqinggl/kaoqinggl.html#leave-apply",
+              "icon": "fa fa-search",
+              "target": "_self"
+            }, {
+              "title": "考勤统计",
+              "href": "./kaoqinggl/kaoqinggl.html#attendance-stat",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
+        },
+		{
+		  "title": "通知公告",
+		  "href": "",
+		  "icon": "fa fa-check-square-o",
+		  "target": "_self",
+		  "child": [
+		    {
+		      "title": "发布通知",
+		      "href": "./tongzhigl/tongzhigl.html#publish-notice",
+		      "icon": "fa fa-plus-circle",
+		      "target": "_self"
+		    }, {
+		      "title": "我的通知",
+		      "href": "./tongzhigl/tongzhigl.html#my-notice",
+		      "icon": "fa fa-search-plus",
+		      "target": "_self"
+		    }, {
+		      "title": "历史通知",
+		      "href": "./tongzhigl/tongzhigl.html#history-notice",
+		      "icon": "fa fa-bar-chart",
+		      "target": "_self"
+		    }
+		  ]
+		}
+      ]
+    }
+  ]
+}
