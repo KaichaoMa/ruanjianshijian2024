@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 通知公告</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../shouye/shouye.html">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../xiangmugl/xiangmugl.html">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ziyuangl/ziyuangl.html">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../jinfeigl/jinfeigl.html">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../kaoqinggl/kaoqinggl.html">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 功能选项卡 -->
+        <ul class="nav nav-tabs mb-4" id="noticeTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="publish-notice-tab" data-bs-toggle="tab" data-bs-target="#publish-notice" type="button" role="tab">发布通知</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="my-notice-tab" data-bs-toggle="tab" data-bs-target="#my-notice" type="button" role="tab">我的通知</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-notice-tab" data-bs-toggle="tab" data-bs-target="#history-notice" type="button" role="tab">历史通知</button>
+            </li>
+        </ul>
+
+        <!-- 功能内容区 -->
+        <div class="tab-content" id="noticeTabContent">
+            <!-- 1. 发布通知 -->
+            <div class="tab-pane fade show active" id="publish-notice" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">发布通知公告</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">通知类型 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="noticeType" required>
+                                    <option value="">请选择通知类型</option>
+                                    <option value="policy">科研政策通知</option>
+                                    <option value="project">项目通知</option>
+                                    <option value="system">系统通知</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">截止日期 <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">通知标题 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="10-50个汉字" required>
+                            </div>
+                            <div class="col-12" id="targetProjectContainer" style="display: none;">
+                                <label class="form-label">关联项目（仅项目通知需选） <span class="text-danger">*</span></label>
+                                <select class="form-select" multiple required>
+                                    <option value="proj01">LX-2024-001 - AI智能检测系统研发</option>
+                                    <option value="proj02">LX-2024-002 - 新型材料性能测试合作</option>
+                                </select>
+                                <div class="form-text">按住Ctrl键可多选，自动推送至项目参与人员</div>
+                            </div>
+                            <div class="col-12" id="policyFileContainer" style="display: none;">
+                                <label class="form-label">政策文件（仅政策通知需上传） <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" accept=".pdf" required>
+                                <div class="form-text">单个文件≤200MB，仅支持PDF格式（政府政策原文）</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">通知内容 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="6" placeholder="使用富文本编辑，支持图片、表格" required></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">推送范围 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="pushScope" required>
+                                    <option value="all">全体用户</option>
+                                    <option value="dept">特定部门</option>
+                                    <option value="project">特定项目组</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" id="deptSelectContainer" style="display: none;">
+                                <label class="form-label">选择部门（仅特定部门需选） <span class="text-danger">*</span></label>
+                                <select class="form-select" multiple required>
+                                    <option value="dept1">计算机研究所</option>
+                                    <option value="dept2">材料科学部门</option>
+                                    <option value="dept3">生物工程实验室</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sendSms" checked>
+                                    <label class="form-check-label" for="sendSms">
+                                        重要通知同步发送短信提醒
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitNoticeBtn">发布通知</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 我的通知 -->
+            <div class="tab-pane fade" id="my-notice" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">我的通知</h5>
+                        <div>
+                            <select class="form-select form-select-sm d-inline-block w-auto" id="noticeFilter">
+                                <option value="all">全部通知</option>
+                                <option value="unread">未读通知</option>
+                                <option value="expired">已过期通知</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <!-- 未读通知 -->
+                            <div class="list-group-item list-group-item-action border-start-4 border-primary">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">【项目通知】AI智能检测系统研发项目申报截止提醒</h6>
+                                        <small class="text-muted">发布人：项目管理管理员 | 发布时间：2024-06-08</small>
+                                        <p class="mt-2 mb-1">您好！您参与的“AI智能检测系统研发”项目申报将于2024-06-15截止，请尽快完成申报材料提交，确保预算明细与总金额一致，逾期将无法受理。</p>
+                                    </div>
+                                    <span class="badge bg-primary">未读</span>
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-secondary viewNoticeBtn">查看详情</button>
+                                </div>
+                            </div>
+
+                            <!-- 已读通知 -->
+                            <div class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">【系统通知】系统维护通知</h6>
+                                        <small class="text-muted">发布人：系统管理员 | 发布时间：2024-06-05</small>
+                                        <p class="mt-2 mb-1">为提升系统稳定性，将于2024-06-09 22:00-24:00进行系统维护，维护期间系统将暂停使用，请提前做好数据备份与工作安排，维护完成后将通过短信通知。</p>
+                                    </div>
+                                    <span class="badge bg-secondary">已读</span>
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-secondary viewNoticeBtn">查看详情</button>
+                                </div>
+                            </div>
+
+                            <!-- 已过期通知 -->
+                            <div class="list-group-item list-group-item-action text-muted">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">【科研政策通知】2024年度国家自然科学基金申报政策</h6>
+                                        <small class="text-muted">发布人：超级管理员 | 发布时间：2024-05-10 | 已过期（截止2024-06-01）</small>
+                                        <p class="mt-2 mb-1">2024年度国家自然科学基金申报工作已启动，现将《国家自然科学基金项目申报指南》转发给您，请仔细阅读申报条件与流程，于2024-06-01前完成系统提交。</p>
+                                    </div>
+                                    <span class="badge bg-danger">已过期</span>
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-secondary viewNoticeBtn">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 未读统计 -->
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">未读通知统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="unreadNoticeChart" width="400" height="200"></canvas>
+                            </div>
+                            <div class="col-md-6 d-flex flex-column justify-center">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>通知类型</th>
+                                            <th>未读数量</th>
+                                            <th>总数量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>科研政策通知</td>
+                                            <td>1</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>项目通知</td>
+                                            <td>2</td>
+                                            <td>5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>系统通知</td>
+                                            <td>0</td>
+                                            <td>2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 历史通知 -->
+            <div class="tab-pane fade" id="history-notice" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">历史通知检索</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">通知标题</label>
+                                <input type="text" class="form-control" placeholder="模糊查询">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">通知类型</label>
+                                <select class="form-select">
+                                    <option value="">全部类型</option>
+                                    <option value="policy">科研政策通知</option>
+                                    <option value="project">项目通知</option>
+                                    <option value="system">系统通知</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">发布时间范围</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control">
+                                    <span class="input-group-text">至</span>
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="searchHistoryBtn">检索历史通知</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 历史通知列表 -->
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">历史通知列表（2024年）</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>通知标题</th>
+                                        <th>通知类型</th>
+                                        <th>发布人</th>
+                                        <th>发布时间</th>
+                                        <th>截止日期</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024年度国家自然科学基金申报政策</td>
+                                        <td>科研政策通知</td>
+                                        <td>超级管理员</td>
+                                        <td>2024-05-10</td>
+                                        <td>2024-06-01</td>
+                                        <td><button class="btn btn-sm btn-secondary viewHistoryBtn">查看详情</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>科研设备采购流程优化通知</td>
+                                        <td>系统通知</td>
+                                        <td>资源管理管理员</td>
+                                        <td>2024-04-20</td>
+                                        <td>2024-05-20</td>
+                                        <td><button class="btn btn-sm btn-secondary viewHistoryBtn">查看详情</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>新型材料性能测试合作项目中期检查通知</td>
+                                        <td>项目通知</td>
+                                        <td>项目管理管理员</td>
+                                        <td>2024-03-15</td>
+                                        <td>2024-04-15</td>
+                                        <td><button class="btn btn-sm btn-secondary viewHistoryBtn">查看详情</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 切换通知类型显示对应字段
+        $('#noticeType').change(function() {
+            const type = $(this).val();
+            $('#targetProjectContainer, #policyFileContainer').hide();
+            
+            if (type === 'project') {
+                $('#targetProjectContainer').show();
+            } else if (type === 'policy') {
+                $('#policyFileContainer').show();
+            }
+        });
+
+        // 切换推送范围显示对应选择项
+        $('#pushScope').change(function() {
+            const scope = $(this).val();
+            $('#deptSelectContainer').toggle(scope === 'dept');
+        });
+
+        // 发布通知
+        $('#submitNoticeBtn').click(function() {
+            const type = $('#noticeType option:selected').text();
+            const isSms = $('#sendSms').is(':checked');
+            const smsTip = isSms ? '（已同步发送短信提醒）' : '';
+            alert(`通知发布成功！\n通知类型：${type}\n${smsTip}`);
+        });
+
+        // 筛选通知
+        $('#noticeFilter').change(function() {
+            const filter = $(this).val();
+            const items = $('.list-group-item');
+            
+            if (filter === 'unread') {
+                items.hide();
+                items.filter('.border-start-4.border-primary').show();
+            } else if (filter === 'expired') {
+                items.hide();
+                items.filter(':has(.badge.bg-danger)').show();
+            } else {
+                items.show();
+            }
+            alert(`已筛选出【${$(this).find('option:selected').text()}】共${$('.list-group-item:visible').length}条`);
+        });
+
+        // 查看通知详情
+        $('.viewNoticeBtn, .viewHistoryBtn').click(function() {
+            const title = $(this).closest('.list-group-item, tr').find('h6, td:first').text();
+            const isUnread = $(this).closest('.list-group-item').find('.badge.bg-primary').length > 0;
+            
+            // 未读通知标记为已读
+            if (isUnread) {
+                $(this).closest('.list-group-item').find('.badge.bg-primary')
+                    .removeClass('bg-primary').addClass('bg-secondary').text('已读');
+                $(this).closest('.list-group-item').removeClass('border-start-4 border-primary');
+            }
+
+            const modal = `
+                <div class="modal fade" id="noticeDetailModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3 text-muted">
+                                    <span>发布人：系统管理员</span> | 
+                                    <span>发布时间：2024-06-08</span> | 
+                                    <span>截止日期：2024-06-15</span>
+                                </div>
+                                <div class="border p-3 bg-white">
+                                    <p>您好！您参与的“AI智能检测系统研发”项目申报将于2024-06-15截止，请尽快完成以下工作：</p>
+                                    <ol>
+                                        <li>确认申报材料完整性（含申报书、预算明细、资质证明），确保无遗漏字段</li>
+                                        <li>预算明细需与总金额一致，设备采购类预算需注明具体型号与数量</li>
+                                        <li>申报书需经部门管理员初审通过后，再提交至职能复审环节</li>
+                                    </ol>
+                                    <p class="mt-3">如有疑问，请联系项目管理管理员李四（电话：139****5678）。</p>
+                                    <div class="mt-4">
+                                        <h6>附件下载：</h6>
+                                        <a href="#" class="btn btn-sm btn-secondary">项目申报书模板.docx</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('body').append(modal);
+            $('#noticeDetailModal').modal('show');
+            $('#noticeDetailModal').on('hidden.bs.modal', function() {
+                $(this).remove();
+            });
+        });
+
+        // 检索历史通知
+        $('#searchHistoryBtn').click(function() {
+            alert('历史通知检索成功！共找到3条匹配记录');
+        });
+
+        // 初始化未读通知统计图表
+        const ctx = document.getElementById('unreadNoticeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['科研政策通知', '项目通知', '系统通知'],
+                datasets: [{
+                    data: [1, 2, 0],
+                    backgroundColor: ['#0d6efd', '#ffc107', '#6c757d'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: { display: true, text: '未读通知类型分布' },
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
