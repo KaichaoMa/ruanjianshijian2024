@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研机构管理系统 - 资源管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- 顶部导航 -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">科研机构管理系统</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="../shouye/shouye.html">首页</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../usergl/usergl.html">用户管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../xiangmugl/xiangmugl.html">项目管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">资源管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../chengguogl/chengguogl.html">成果管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../jinfeigl/jinfeigl.html">经费管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../kaoqinggl/kaoqinggl.html">考勤管理</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../tongzhigl/tongzhigl.html">通知公告</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 功能选项卡 -->
+        <ul class="nav nav-tabs mb-4" id="resourceTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="add-equipment-tab" data-bs-toggle="tab" data-bs-target="#add-equipment" type="button" role="tab">设备登记</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="equipment-reserve-tab" data-bs-toggle="tab" data-bs-target="#equipment-reserve" type="button" role="tab">设备预约</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="lab-reserve-tab" data-bs-toggle="tab" data-bs-target="#lab-reserve" type="button" role="tab">实验室预约</button>
+            </li>
+        </ul>
+
+        <!-- 功能内容区 -->
+        <div class="tab-content" id="resourceTabContent">
+            <!-- 1. 设备登记 -->
+            <div class="tab-pane fade show active" id="add-equipment" role="tabpanel">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">科研设备登记</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">设备名称 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="5-30个汉字/字母组合" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">型号规格 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="5-50个字符" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">采购金额（万元） <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" class="form-control" placeholder="保留2位小数" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">采购日期 <span class="text-danger">*</span></label>
+                                <input type="month" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">设备状态 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="normal">正常</option>
+                                    <option value="repair">维修</option>
+                                    <option value="scrap">报废</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">所属实验室 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择实验室</option>
+                                    <option value="lab01">LAB-01（电子实验室）</option>
+                                    <option value="lab02">LAB-02（材料实验室）</option>
+                                    <option value="lab03">LAB-03（生物实验室）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">责任人 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择系统内科研人员</option>
+                                    <option value="user1">张三（研究员）</option>
+                                    <option value="user2">李四（工程师）</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">采购凭证 <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg" required>
+                                <div class="form-text">单个文件≤100MB，支持PDF、JPG格式</div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitEquipmentBtn">提交登记</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 设备状态变更记录 -->
+                <div class="card bg-light mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">设备状态变更记录</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>设备编号</th>
+                                        <th>设备名称</th>
+                                        <th>原状态</th>
+                                        <th>新状态</th>
+                                        <th>变更人</th>
+                                        <th>变更时间</th>
+                                        <th>变更原因</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>SB-2024-001</td>
+                                        <td>高精度示波器</td>
+                                        <td>正常</td>
+                                        <td>维修</td>
+                                        <td>张三</td>
+                                        <td>2024-05-20 14:30</td>
+                                        <td>探头故障，送修</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SB-2024-002</td>
+                                        <td>服务器</td>
+                                        <td>维修</td>
+                                        <td>正常</td>
+                                        <td>李四</td>
+                                        <td>2024-06-05 09:15</td>
+                                        <td>硬盘更换完成，恢复使用</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 设备预约 -->
+            <div class="tab-pane fade" id="equipment-reserve" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">设备预约</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">设备选择 <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reserveEquipmentSelect" required>
+                                    <option value="">请选择正常状态设备</option>
+                                    <option value="eq01">SB-2024-003 - 光谱分析仪（LAB-01）</option>
+                                    <option value="eq02">SB-2024-004 - 压力试验机（LAB-02）</option>
+                                    <option value="eq03">SB-2024-005 - 离心机（LAB-03）</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">预约日期 <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="reserveDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">预约时段 <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="time" class="form-control" required>
+                                    <span class="input-group-text">至</span>
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <div class="form-text">单次预约最长24小时，跨天需注明“次日归还”</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">预约人 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" value="张三（当前登录用户）" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">预约事由 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="2" placeholder="10-50个汉字，如“项目研发测试”" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitEquipmentReserveBtn">提交预约</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 我的预约记录 -->
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">我的设备预约记录</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>设备名称</th>
+                                        <th>预约日期</th>
+                                        <th>预约时段</th>
+                                        <th>预约状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>光谱分析仪（SB-2024-003）</td>
+                                        <td>2024-06-10</td>
+                                        <td>09:00-17:00</td>
+                                        <td><span class="badge bg-success">已通过</span></td>
+                                        <td><button class="btn btn-sm btn-danger cancelReserveBtn">取消预约</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>压力试验机（SB-2024-004）</td>
+                                        <td>2024-06-15</td>
+                                        <td>10:00-16:00</td>
+                                        <td><span class="badge bg-warning">待确认</span></td>
+                                        <td><button class="btn btn-sm btn-danger cancelReserveBtn">取消预约</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 实验室预约 -->
+            <div class="tab-pane fade" id="lab-reserve" role="tabpanel">
+                <div class="card bg-light mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">实验室预约</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">实验室选择 <span class="text-danger">*</span></label>
+                                <select class="form-select" required>
+                                    <option value="">请选择实验室（查看实时状态）</option>
+                                    <option value="lab01">LAB-01（电子实验室）- 空闲</option>
+                                    <option value="lab02">LAB-02（材料实验室）- 已预约</option>
+                                    <option value="lab03">LAB-03（生物实验室）- 空闲</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">预约日期 <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" required>
+                                <div class="form-text">仅支持非节假日预约</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">预约时段 <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="time" class="form-control" min="08:00" max="18:00" required>
+                                    <span class="input-group-text">至</span>
+                                    <input type="time" class="form-control" min="08:00" max="18:00" required>
+                                </div>
+                                <div class="form-text">单次预约最长8小时，超出需特殊审批</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">参与人数 <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" min="1" max="20" placeholder="1-20人" required>
+                                <div class="form-text">需符合实验室容量限制</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">项目组名称 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="5-20个汉字" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">项目组长 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" value="张三（当前登录用户）" readonly>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">预约事由 <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="2" placeholder="10-50个汉字" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="safetyAgreement" required>
+                                    <label class="form-check-label" for="safetyAgreement">
+                                        我已阅读并同意《实验室安全承诺书》
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="submitLabReserveBtn">提交预约</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实验室预约统计 -->
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="mb-0">本周实验室预约率</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="labReserveChart" width="400" height="200"></canvas>
+                            </div>
+                            <div class="col-md-6 d-flex flex-column justify-center">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>实验室</th>
+                                            <th>本周预约次数</th>
+                                            <th>空闲时段占比</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>LAB-01</td>
+                                            <td>8次</td>
+                                            <td>60%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>LAB-02</td>
+                                            <td>12次</td>
+                                            <td>35%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>LAB-03</td>
+                                            <td>5次</td>
+                                            <td>75%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 设备登记提交
+        $('#submitEquipmentBtn').click(function() {
+            alert('设备登记提交成功！等待超级管理员审核');
+        });
+
+        // 设备预约提交
+        $('#submitEquipmentReserveBtn').click(function() {
+            const equipment = $('#reserveEquipmentSelect option:selected').text();
+            const date = $('#reserveDate').val();
+            if (!equipment || !date) {
+                alert('请完善设备和日期信息！');
+                return;
+            }
+            alert(`设备预约申请提交成功！\n设备：${equipment}\n日期：${date}`);
+        });
+
+        // 取消设备预约
+        $('.cancelReserveBtn').click(function() {
+            if (confirm('确定要取消该预约吗？取消后不可恢复')) {
+                $(this).closest('tr').remove();
+                alert('预约已取消！');
+            }
+        });
+
+        // 实验室预约提交
+        $('#submitLabReserveBtn').click(function() {
+            if (!$('#safetyAgreement').is(':checked')) {
+                alert('请阅读并同意《实验室安全承诺书》！');
+                return;
+            }
+            alert('实验室预约申请提交成功！等待实验室管理员审核（2个工作日内）');
+        });
+
+        // 实验室预约率图表
+        const ctx = document.getElementById('labReserveChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['周一', '周二', '周三', '周四', '周五', '周六'],
+                datasets: [{
+                    label: 'LAB-01 预约次数',
+                    data: [2, 1, 3, 0, 2, 0],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'LAB-02 预约次数',
+                    data: [3, 2, 4, 1, 2, 0],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
